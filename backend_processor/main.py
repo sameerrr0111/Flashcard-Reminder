@@ -104,8 +104,9 @@ def home():
     """Health check endpoint."""
     return "Flashcard Backend Service is alive!"
 
-@app.route("/run")
-def run_processing():
+@app.route("/run", methods=["GET", "HEAD"])
+@app.route("/run/<path_key>", methods=["GET", "HEAD"])
+def run_processing(path_key=None):
     """
     Endpoint to trigger the flashcard processing logic.
     Requires an API key for authorization.
@@ -115,7 +116,12 @@ def run_processing():
     # 1. API Key Protection
     auth_header = request.headers.get("Authorization", "")
     bearer_token = auth_header.replace("Bearer ", "", 1).strip() if auth_header.startswith("Bearer ") else ""
-    request_key = request.args.get("key") or request.headers.get("X-API-Key") or bearer_token
+    request_key = (
+        path_key
+        or request.args.get("key")
+        or request.headers.get("X-API-Key")
+        or bearer_token
+    )
     if not API_SECRET_KEY or request_key != API_SECRET_KEY:
         print("Unauthorized attempt to access /run.")
         return jsonify({"status": "error", "message": "Unauthorized"}), 403
