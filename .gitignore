@@ -1,0 +1,10 @@
+# Python
+__pycache__/
+*.pyc
+.Python
+venv/
+.env
+google_credentials.json
+
+# Render specific
+.render/
