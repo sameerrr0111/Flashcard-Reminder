@@ -8,3 +8,11 @@ google_credentials.json
 
 # Render specific
 .render/
+
+# PyInstaller build artifacts
+build/
+dist/
+*.spec
+
+# Runtime local artifacts
+daily_reviewer.lock
